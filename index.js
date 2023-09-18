@@ -21,7 +21,10 @@ app.use("/api/auth/user/", userRoutes);
 app.use("/api/category/", categoryRoutes);
 app.use("/api/blog/", blogRoutes);
 app.use("/api/comment/", commentRoute);
-
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Expose-Headers", "Authorization");
+  next();
+});
 app.use(function (err, req, res, next) {
   // console.log(err);
   res.status(err.status || 500).send({
