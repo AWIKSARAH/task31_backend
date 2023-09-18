@@ -11,7 +11,14 @@ const port = process.env.PORT || 3000;
 
 connection();
 
-app.use(cors());
+app.use(
+  cors({
+    optionsSuccessStatus: 200,
+    origin: "*",
+    credentials: true,
+    exposedHeaders: ["Authorization"],
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -21,10 +28,7 @@ app.use("/api/auth/user/", userRoutes);
 app.use("/api/category/", categoryRoutes);
 app.use("/api/blog/", blogRoutes);
 app.use("/api/comment/", commentRoute);
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Expose-Headers", "Authorization");
-  next();
-});
+
 app.use(function (err, req, res, next) {
   // console.log(err);
   res.status(err.status || 500).send({
