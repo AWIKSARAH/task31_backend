@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 connection();
 
-app.use(cors({ origin: "http://127.0.0.1:5500/" }));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
