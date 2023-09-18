@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 connection();
 
-app.use(cors());
+app.use(cors({ origin: "http://127.0.0.1:5500/" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -32,7 +32,6 @@ app.use(function (err, req, res, next) {
 app.listen(port, () => {
   console.log(`Hello :) Your Server Running on :  http://localhost:${port}`);
 });
-
 
 /**
  *
