@@ -24,6 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 
 //INCLUDE THE ROUTING
 
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api/auth/user/", userRoutes);
 app.use("/api/category/", categoryRoutes);
 app.use("/api/blog/", blogRoutes);
