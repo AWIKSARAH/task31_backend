@@ -28,7 +28,7 @@ export default function uploadImage(imageName) {
         }
         // Check if a file has been uploaded
         if (req.file) {
-          req.body.image = "/uploads/" +req.file.filename;
+          req.body.image = req.file.filename;
         }
         next();
       });
