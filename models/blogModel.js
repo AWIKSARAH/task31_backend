@@ -37,12 +37,12 @@ const blogSchema = new Schema({
 
 blogSchema.plugin(mongoosePaginate);
 
-// blogSchema.pre("find", function (next) {
-//   this.populate("author", "name");
-//   this.populate("category", "name");
-//   this.populate("comments", "text author.name");
-//   next();
-// });
+blogSchema.pre("find", function (next) {
+  this.populate("author", "name");
+  this.populate("category", "name");
+  //   this.populate("comments", "text author.name");
+  next();
+});
 
 export default model("Blog", blogSchema);
 
