@@ -24,6 +24,13 @@ export const getAllBlog = async (req, res, next) => {
     const options = {
       page: parseInt(req.query.page) || 1,
       limit: parseInt(req.query.limit) || 10,
+      populate: {
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "Users",
+        },
+      },
     };
 
     const query = req.query.q;
@@ -36,7 +43,6 @@ export const getAllBlog = async (req, res, next) => {
     }
 
     const blogs = await Blog.paginate(filter, options);
-    await Blog.populate(blogs, { path: "comments" });
 
     if (!blogs) {
       next(new NotFoundError("No Blogs Found!"));
@@ -74,7 +80,7 @@ export const countBlogsByCategory = async (req, res, next) => {
       },
       {
         $lookup: {
-          from: "categories", // Name of the Category collection
+          from: "categories",
           localField: "_id",
           foreignField: "_id",
           as: "categoryDetails",
@@ -87,14 +93,14 @@ export const countBlogsByCategory = async (req, res, next) => {
       },
       {
         $project: {
-          categoryDetails: 0, // Remove the categoryDetails array
+          categoryDetails: 0,
         },
       },
       {
         $group: {
-          _id: null, // Group all documents together
-          totalBlogs: { $sum: "$count" }, // Calculate the total count
-          categoryCounts: { $push: "$$ROOT" }, // Preserve the existing categoryCounts
+          _id: null,
+          totalBlogs: { $sum: "$count" },
+          categoryCounts: { $push: "$$ROOT" },
         },
       },
     ]);

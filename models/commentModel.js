@@ -15,6 +15,7 @@ const commentSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     required: true,
+    populate: true,
   },
   blog: {
     type: mongoose.Schema.Types.ObjectId,

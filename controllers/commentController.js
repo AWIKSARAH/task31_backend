@@ -4,8 +4,7 @@ import {
   BadRequestError,
   UnauthorizedError,
 } from "../errors.js";
-import Blog from '../models/blogModel.js';
-
+import Blog from "../models/blogModel.js";
 
 /**
 
@@ -18,6 +17,9 @@ import Blog from '../models/blogModel.js';
 export const createComment = async (req, res, next) => {
   const { text, blog } = req.body;
   const author = req.user._id;
+  console.log("====================================");
+  console.log(req.body, author);
+  console.log("====================================");
   try {
     if (!author) {
       throw new UnauthorizedError("Missing author");
@@ -29,12 +31,11 @@ export const createComment = async (req, res, next) => {
     const newComment = new Comment({
       text,
       author,
-      blog, // Associate the comment with the specific blog
+      blog,
     });
 
     const savedComment = await newComment.save();
 
-    // Find the associated blog and add the comment to its comments array
     const associatedBlog = await Blog.findById(blog);
     if (!associatedBlog) {
       throw new NotFoundError("Blog not found");
