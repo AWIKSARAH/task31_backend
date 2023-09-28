@@ -40,7 +40,6 @@ blogSchema.plugin(mongoosePaginate);
 blogSchema.pre("find", function (next) {
   this.populate("author", "name");
   this.populate("category", "name");
-  //   this.populate("comments", "text author.name");
   next();
 });
 

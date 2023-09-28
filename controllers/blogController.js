@@ -5,6 +5,7 @@ import {
   BadRequestError,
   UnauthorizedError,
 } from "../errors.js";
+import _ from "mongoose-paginate-v2";
 
 export const createBlog = async (req, res, next) => {
   const author = req.user._id;
@@ -34,12 +35,18 @@ export const getAllBlog = async (req, res, next) => {
     };
 
     const query = req.query.q;
+    const category = req.query.category;
+
     if (query) {
       const regex = new RegExp(query, "i");
 
       filter = {
         $or: [{ title: { $regex: regex } }, { description: { $regex: regex } }],
       };
+    }
+
+    if (category) {
+      filter.category = category;
     }
 
     const blogs = await Blog.paginate(filter, options);
@@ -108,6 +115,37 @@ export const countBlogsByCategory = async (req, res, next) => {
     return res.status(200).json({ categoryCounts });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllBlogsByAuthor = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    console.log("====================================");
+    console.log(_id);
+    console.log("====================================");
+    const blogs = await Blog.find({ author: _id }).populate({
+      path: "comments",
+      populate: {
+        path: "author",
+        model: "Users",
+      },
+    });
+
+    if (!blogs) {
+      throw new NotFoundError("No Blog Yet add Your first blog now! ");
+    }
+
+    res.status(200).json({
+      success: true,
+      blogs: blogs,
+    });
+  } catch (error) {
+    next(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
