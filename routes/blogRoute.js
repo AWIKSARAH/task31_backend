@@ -10,8 +10,8 @@ import auth from "../middleware//jwtAuthenticationMiddleware.js";
 import upload from "../middleware/imageHandlerMiddleware.js";
 const router = express.Router();
 
-router.post("/", upload("blog"), createBlog);
-router.get("/", getAllBlog);
+router.post("/", auth, upload("blog"), createBlog);
+router.get("/", auth, getAllBlog);
 router.get("/me", auth, getAllBlogsByAuthor);
 router.get("/count", auth, countBlogsByCategory);
 router.get("/:id", auth, getBlogById);
