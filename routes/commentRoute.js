@@ -7,10 +7,9 @@ import {
 import auth from "../middleware/jwtAuthenticationMiddleware.js";
 const router = express.Router();
 
-
 router.post("/", auth, createComment);
-router.get("/", getComments);
-router.delete("/", deleteComment);
+router.get("/", auth, getComments);
+router.delete("/", auth, deleteComment);
 
 export default router;
 
