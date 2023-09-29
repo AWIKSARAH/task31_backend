@@ -17,9 +17,7 @@ import Blog from "../models/blogModel.js";
 export const createComment = async (req, res, next) => {
   const { text, blog } = req.body;
   const author = req.user._id;
-  console.log("====================================");
-  console.log(req.body, author);
-  console.log("====================================");
+
   try {
     if (!author) {
       throw new UnauthorizedError("Missing author");

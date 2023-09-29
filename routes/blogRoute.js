@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/", auth, upload("blog"), createBlog);
 router.get("/", auth, getAllBlog);
 router.get("/me", auth, getAllBlogsByAuthor);
-router.get("/count", auth, countBlogsByCategory);
+router.get("/count", countBlogsByCategory);
 router.get("/:id", auth, getBlogById);
 export default router;
 

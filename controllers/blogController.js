@@ -75,7 +75,6 @@ export const getBlogById = async (req, res, next) => {
     next(error);
   }
 };
-
 export const countBlogsByCategory = async (req, res, next) => {
   try {
     const categoryCounts = await Blog.aggregate([
@@ -99,20 +98,16 @@ export const countBlogsByCategory = async (req, res, next) => {
         },
       },
       {
-        $project: {
-          categoryDetails: 0,
-        },
-      },
-      {
         $group: {
-          _id: null,
-          totalBlogs: { $sum: "$count" },
-          categoryCounts: { $push: "$$ROOT" },
+          _id: "$categoryName",
+          categoryCount: { $sum: "$count" },
         },
       },
     ]);
 
-    return res.status(200).json({ categoryCounts });
+    const totalBlogs = categoryCounts.reduce((total, category) => total + category.categoryCount, 0);
+
+    return res.status(200).json({ categoryCounts, totalBlogs });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

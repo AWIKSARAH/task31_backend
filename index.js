@@ -5,7 +5,7 @@ import categoryRoutes from "./routes/categoryRoute.js";
 import blogRoutes from "./routes/blogRoute.js";
 import commentRoute from "./routes/commentRoute.js";
 import connection from "./libs/connection_db.js";
-
+import contactRoute from "./routes/contactRoute.js";
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -30,6 +30,7 @@ app.use("/api/auth/user/", userRoutes);
 app.use("/api/category/", categoryRoutes);
 app.use("/api/blog/", blogRoutes);
 app.use("/api/comment/", commentRoute);
+app.use("/api/contact/", contactRoute);
 
 app.use(function (err, req, res, next) {
   // console.log(err);
