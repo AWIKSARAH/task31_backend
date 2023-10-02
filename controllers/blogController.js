@@ -98,16 +98,20 @@ export const countBlogsByCategory = async (req, res, next) => {
         },
       },
       {
+        $project: {
+          categoryDetails: 0,
+        },
+      },
+      {
         $group: {
-          _id: "$categoryName",
-          categoryCount: { $sum: "$count" },
+          _id: null,
+          totalBlogs: { $sum: "$count" },
+          categoryCounts: { $push: "$$ROOT" },
         },
       },
     ]);
 
-    const totalBlogs = categoryCounts.reduce((total, category) => total + category.categoryCount, 0);
-
-    return res.status(200).json({ categoryCounts, totalBlogs });
+    return res.status(200).json({ categoryCounts });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
